@@ -160,6 +160,103 @@ You can also generate a detailed html report in a directory named htmlcov with t
 $ coverage html
 ```
 
+# CLI Commands
+
+This project provides several custom Flask CLI commands for managing users, drivers, and residents. Below is a summary of the available commands, their usage, and examples:
+
+## User Commands
+
+```
+flask user create <username> <password> <user_type> <status> <street_id>
+```
+- Create a new user (resident or driver).
+- Examples:
+  - Create a resident:
+    ```bash
+    flask user create bob bobpass resident active 10
+    ```
+  - Create a driver:
+    ```bash
+    flask user create alice alicepass driver active 20
+    ```
+
+```
+flask user list [format]
+```
+- List all users in the database.
+- `format` can be `string` or `json`.
+- Examples:
+  ```bash
+  flask user list string
+  flask user list json
+  ```
+
+## Driver Commands
+
+```
+flask driver schedule-drive <driver_id> <street_id> <date> <time>
+```
+- Schedule a drive for a driver to a street on a specific date and time.
+- Example:
+  ```bash
+  flask driver schedule-drive 2 20 2025-10-15 14:30
+  ```
+
+```
+flask driver view-drives <driver_id>
+```
+- View all drives scheduled for a driver.
+- Example:
+  ```bash
+  flask driver view-drives 2
+  ```
+
+## Resident Commands
+
+```
+flask resident view-inbox <resident_id>
+```
+- View all scheduled drives for the resident's street.
+- Example:
+  ```bash
+  flask resident view-inbox 5
+  ```
+
+```
+flask resident request-stop <drive_id> <street_id>
+```
+- Request a stop from a driver for a specific drive and street.
+- Example:
+  ```bash
+  flask resident request-stop 3 10
+  ```
+
+```
+flask resident view-driver <driver_id> <resident_id>
+```
+- View a driver's status and location as seen by a resident.
+- Example:
+  ```bash
+  flask resident view-driver 2 5
+  ```
+
+## Test Commands
+
+```
+flask test user [type]
+```
+- Run user tests. `type` can be `unit`, `int`, or `all`.
+- Examples:
+  ```bash
+  flask test user
+  flask test user unit
+  flask test user int
+  ```
+
+---
+
+See the code in `wsgi.py` for more details and examples of each command.
+
 # Troubleshooting
 
 ## Views 404ing

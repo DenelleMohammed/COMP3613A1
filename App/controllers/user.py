@@ -1,8 +1,20 @@
 from App.models import User
 from App.database import db
+from App.models.Resident import Resident
+from App.models.Driver import Driver
 
-def create_user(username, password):
-    newuser = User(username=username, password=password)
+def create_user(username, password, user_type='resident', **kwargs):
+    if user_type not in ['resident', 'driver']:
+        raise ValueError("user_type must be either 'resident' or 'driver'")
+    if user_type == 'resident':
+        street_id = kwargs.get('street_id')
+        newuser = Resident(username, password, street_id)
+    elif user_type == 'driver':
+        status = kwargs.get('status', 'active')
+        street_id = kwargs.get('street_id')
+        newuser = Driver(username, password, status, street_id)
+    else:
+        newuser = User(username, password, user_type)
     db.session.add(newuser)
     db.session.commit()
     return newuser
