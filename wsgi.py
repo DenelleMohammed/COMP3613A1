@@ -4,7 +4,8 @@ from flask.cli import with_appcontext, AppGroup
 from App.database import db, get_migrate
 from App.models.Driver import Driver
 from App.models.Resident import Resident
-from App.models import (User, Drive, Stop)
+from App.models.Drive import Drive
+from App.models import (User, Stop)
 from App.main import create_app
 from App.controllers import ( create_user, get_all_users_json, get_all_users, initialize )
 from datetime import datetime
@@ -70,9 +71,20 @@ def schedule_drive_command(driver_id, street_id, date, time):
         print(f"No driver found with ID {driver_id}")
         return
     
+    # drive = Drive.query.filter_by(driver_id=driver_id, street_id=street_id, date=date).first()
+    # if drive:
+    #     print("Drive already scheduled for this driver on this street and date.")
+    #     return
+    
     date_obj = datetime.strptime(date, "%Y-%m-%d")
     time_obj = datetime.strptime(time, "%H:%M").time()
     datetime_obj = datetime.combine(date_obj, time_obj)
+
+    drive = Drive.query.filter_by(driver_id=driver_id, street_id=street_id, date=datetime_obj).first()
+    if drive:
+        print("Drive already scheduled for this driver on this street and date.")
+        return
+    
     new_drive = driver.schedule_drive(driver_id, street_id, datetime_obj)
     print(f"Scheduled drive: {new_drive}")
 

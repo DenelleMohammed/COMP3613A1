@@ -5,7 +5,6 @@ class Drive(db.Model):
     driver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     street_id = db.Column(db.Integer, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
-    #time = db.Column(db.Time, nullable=False, default=db.func.current_time())
     stops = db.relationship('Stop', backref='drive', lazy=True)
 
     def __init__(self, driver_id, street_id, date):
