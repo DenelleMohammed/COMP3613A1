@@ -104,6 +104,34 @@ def view_drives_command(driver_id):
     for drive in drives:
         print(drive)
 
+@driver_cli.command("update-status", help="Update driver status")
+@click.argument("driver_id", type=int)
+@click.argument("status")
+def update_status_command(driver_id, status):
+    driver = Driver.query.filter_by(driver_id=driver_id).first()
+    if not driver:
+        print(f"No driver found with ID {driver_id}")
+        return
+    
+    old_status = driver.status
+    driver.status = status
+    db.session.commit()
+    print(f"Driver {driver_id} status updated to {status} from {old_status}")
+
+@driver_cli.command("update-location", help="Update driver location")
+@click.argument("driver_id", type=int)
+@click.argument("street_id", type=int)
+def update_location_command(driver_id, street_id):
+    driver = Driver.query.filter_by(driver_id=driver_id).first()
+    if not driver:
+        print(f"No driver found with ID {driver_id}")
+        return
+    
+    old_street_id = driver.street_id
+    driver.street_id = street_id
+    db.session.commit()
+    print(f"Driver {driver_id} location updated to street ID {street_id} from {old_street_id}")
+
 app.cli.add_command(driver_cli)
 
 resident_cli = AppGroup('resident', help='Resident object commands') # flask resident view_inbox 10

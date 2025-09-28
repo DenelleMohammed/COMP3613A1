@@ -211,6 +211,24 @@ flask driver view-drives <driver_id>
   flask driver view-drives 2
   ```
 
+```
+flask driver update-status <driver_id> <status>
+```
+- Update a driver's status (e.g., active, inactive).
+- Example:
+  ```bash
+  flask driver update-status 2 active
+  ```
+
+```
+flask driver update-location <driver_id> <street_id>
+```
+- Update a driver's current street/location.
+- Example:
+  ```bash
+  flask driver update-location 2 30
+  ```
+
 ## Resident Commands
 
 ```
